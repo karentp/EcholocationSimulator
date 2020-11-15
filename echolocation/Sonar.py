@@ -11,7 +11,7 @@ class Sonar():
         self.orientation = orientation
 
     def cast_rays(self,target_angle):
-        sound = SoundRay(self.position,target_angle,self.scenario, self.orientation)
+        sound = SoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500])
         pos_final=sound.move()
         return pos_final
     
@@ -24,7 +24,7 @@ class Sonar():
             angle = random.uniform(-self.angle_scope, self.angle_scope)
             angles.append(angle)
             finalpos=self.cast_rays(angle)
-            sound_ray = SoundRay(self.position,angle,self.scenario, self.orientation)
+            sound_ray = SoundRay(self.position,angle,self.scenario, self.orientation,[500,500])
             if sound_ray.check_collision(finalpos):
                 fill(250)
                 rect(finalpos[0], finalpos[1], 1, 1)
