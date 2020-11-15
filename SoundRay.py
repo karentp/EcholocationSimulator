@@ -10,36 +10,36 @@ class SoundRay():
     def define_board_points(self, final_x,final_y):
         if(self.orientation=="derecha"):
             if(self.main_angle>=0):
-                self.final_pos[0]=250+final_x
-                self.final_pos[1]=250-final_y
+                self.final_pos[0]=self.origin[0]+final_x
+                self.final_pos[1]=self.origin[1]-final_y
             else:
-                self.final_pos[0]=250+final_x
-                self.final_pos[1]=250+final_y
+                self.final_pos[0]=self.origin[0]+final_x
+                self.final_pos[1]=self.origin[1]+final_y
                 
         elif(self.orientation=="arriba"):
             if(self.main_angle>=0):
-                self.final_pos[1]=250-final_x
+                self.final_pos[1]=self.origin[0]-final_x
                 print("final y", final_y)
-                self.final_pos[0]=250-final_y
+                self.final_pos[0]=self.origin[1]-final_y
             else:
-                self.final_pos[1]=250-final_x
-                self.final_pos[0]=250+final_y
+                self.final_pos[1]=self.origin[0]-final_x
+                self.final_pos[0]=self.origin[1]+final_y
                 
         elif(self.orientation=="izquierda"):
                 if(self.main_angle>=0):
-                    self.final_pos[0]=250-final_x
-                    self.final_pos[1]=250-final_y
+                    self.final_pos[0]=self.origin[0]-final_x
+                    self.final_pos[1]=self.origin[1]-final_y
                 else:
-                    self.final_pos[0]=250-final_x
-                    self.final_pos[1]=250+final_y
+                    self.final_pos[0]=self.origin[0]-final_x
+                    self.final_pos[1]=self.origin[1]+final_y
                     
         elif(self.orientation=="abajo"):
             if(self.main_angle>=0):
-                self.final_pos[1]=250+final_x 
-                self.final_pos[0]=250-final_y 
+                self.final_pos[1]=self.origin[0]+final_x 
+                self.final_pos[0]=self.origin[1]-final_y 
             else:
-                self.final_pos[1]=250+final_x 
-                self.final_pos[0]=250+final_y 
+                self.final_pos[1]=self.origin[0]+final_x 
+                self.final_pos[0]=self.origin[1]+final_y 
                 
         return(self.final_pos)
 
@@ -50,8 +50,6 @@ class SoundRay():
             if(x >= wall.x and x<= wall.x + wall.w and y>= wall.y and y <= wall.y+wall.h):
                 return True
         return False
-        
-        
         
     def move(self):
         final_x = 0
@@ -68,7 +66,7 @@ class SoundRay():
                 y= round((r*sin(radians(self.main_angle))),0)
                 x= round((r*cos(radians(self.main_angle))),0)
                 
-            if(abs(x)<=250 and abs(x)>=0 and abs(y)<=250 and abs(y)>=0):
+            if(abs(x)<=self.origin[0] and abs(x)>=0 and abs(y)<=self.origin[1] and abs(y)>=0):
                 final_pos= self.define_board_points(abs(x),abs(y))
                 if self.check_collision(final_pos) is True:
                     break
