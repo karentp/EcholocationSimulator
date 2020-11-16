@@ -6,7 +6,7 @@ import time
 
 w = h = 500
 sonarX = sonarY = 250
-walls = 6
+walls = 12
 scenario = Scenario(walls, w, h)
 angle_for_rays = 70
 montecarlo_tries = 5
