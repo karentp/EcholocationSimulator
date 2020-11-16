@@ -8,8 +8,8 @@ class SoundRay():
         self.scenario = scenario
         self.board_size = board_size
         
-    def define_board_points(self, final_x,final_y):
-        if(self.orientation=="derecha"):
+    def define_board_points(self, final_x,final_y, orientation):
+        if(orientation=="derecha"):
             if(self.main_angle>=0):
                 self.final_pos[0]=self.origin[0]+final_x
                 self.final_pos[1]=self.origin[1]-final_y
@@ -17,7 +17,7 @@ class SoundRay():
                 self.final_pos[0]=self.origin[0]+final_x
                 self.final_pos[1]=self.origin[1]+final_y
                 
-        elif(self.orientation=="arriba"):
+        elif(orientation=="arriba"):
             if(self.main_angle>=0):
                 self.final_pos[1]=self.origin[1]-final_x
                 self.final_pos[0]=self.origin[0]-final_y
@@ -25,7 +25,7 @@ class SoundRay():
                 self.final_pos[1]=self.origin[1]-final_x
                 self.final_pos[0]=self.origin[0]+final_y
                 
-        elif(self.orientation=="izquierda"):
+        elif(orientation=="izquierda"):
                 if(self.main_angle>=0):
                     self.final_pos[0]=self.origin[0]-final_x
                     self.final_pos[1]=self.origin[1]-final_y
@@ -33,7 +33,7 @@ class SoundRay():
                     self.final_pos[0]=self.origin[0]-final_x
                     self.final_pos[1]=self.origin[1]+final_y
                     
-        elif(self.orientation=="abajo"):
+        elif(orientation=="abajo"):
             if(self.main_angle>=0):
                 self.final_pos[1]=self.origin[1]+final_x 
                 self.final_pos[0]=self.origin[0]-final_y 
@@ -52,7 +52,7 @@ class SoundRay():
                 return True
         return False
         
-    def move(self):
+    def move(self, main_angle, orientation):
         final_x = 0
         final_y = 0
         for r in range(1,710):
@@ -68,13 +68,12 @@ class SoundRay():
                 x= round((r*cos(radians(self.main_angle))),0)
                 
             if(abs(x)<=self.board_size[0] and abs(x)>=0 and abs(y)<=self.board_size[1] and abs(y)>=0):
-                final_pos= self.define_board_points(abs(x),abs(y))
+                final_pos= self.define_board_points(abs(x),abs(y), self.orientation)
                 if self.check_collision(final_pos) is True:
-                    print("orientation", self.orientation)
                     break
             else:
                 #Caso en el que el rayo llega a alguno de los bordes
-                final_pos= self.define_board_points(abs(x),abs(y))
-                break
+                final_pos= self.define_board_points(abs(x),abs(y), self.orientation)
+                break 
             
         return final_pos

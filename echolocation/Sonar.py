@@ -12,7 +12,7 @@ class Sonar():
 
     def cast_rays(self,target_angle):
         sound = SoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500])
-        pos_final=sound.move()
+        pos_final=sound.move(target_angle, self.orientation)
         return pos_final
     
     def draw(self):
@@ -26,6 +26,7 @@ class Sonar():
             finalpos=self.cast_rays(angle)
             sound_ray = SoundRay(self.position,angle,self.scenario, self.orientation,[500,500])
             if sound_ray.check_collision(finalpos):
+                #calculardistancia()
                 fill(250)
                 rect(finalpos[0], finalpos[1], 1, 1)
             
