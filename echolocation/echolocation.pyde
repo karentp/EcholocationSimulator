@@ -6,10 +6,10 @@ import time
 
 w = h = 500
 sonarX = sonarY = 250
-walls = 12
+walls = 7
 scenario = Scenario(walls, w, h)
-angle_for_rays = 70
-montecarlo_tries = 5
+angle_for_rays = 80
+montecarlo_tries = 15
 orientation = "derecha"
 sonar_size = 10
 
@@ -48,6 +48,6 @@ def draw():
     sonar.draw()
     sonar.scan(montecarlo_tries)
     orientation = sonar.change_orientation(orientation, scenario)
-    time.sleep(0.1)
+    time.sleep(0)
 
     

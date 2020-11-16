@@ -1,4 +1,5 @@
 from SoundRay import SoundRay
+from SecondarySoundRay import SecondarySoundRay
 from Scenario import Scenario
 import random
 
@@ -10,12 +11,9 @@ class Sonar():
         self.scenario = scenario
         self.orientation = orientation
 
-    def cast_rays(self,target_angle):
-        #sound = SoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500])
+    def cast_rays(self,target_angle, bounces):
         sound = SoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500])
-        pos_final=sound.generate(target_angle, self.orientation, [],self.position,0,3)
-        print("distancias",pos_final)
-        #pos_final=sound.move(target_angle, self.orientation)
+        pos_final=sound.generate(target_angle, self.orientation, [],self.position,0,bounces)
         return pos_final
     
     def draw(self):
@@ -26,19 +24,21 @@ class Sonar():
         for i in range(MonteCarlo_tries):
             angle = random.uniform(-self.angle_scope, self.angle_scope)
             angles.append(angle)
-            distances=self.cast_rays(angle)
-            #sound_ray = SoundRay(self.position,angle,self.scenario, self.orientation,[500,500])
+            secondary = SecondarySoundRay(self.position,angle,self.scenario, self.orientation,[500,500], self.position)
+            angles = []
+            angle = random.uniform(-self.angle_scope, self.angle_scope)
+            angles.append(angle)
+            distances=self.cast_rays(angle, 3)
+            secondary.secondaryRays(MonteCarlo_tries, self.angle_scope)
             sound_ray = SoundRay(self.position,angle,self.scenario, self.orientation,[500,500])
-            print("HOLIS")
             if(distances !=None):
-                print("HOLIS2222")
                 for i in range(len(distances)):
                     if(i == 0):
                         r = distances[0]
                         colorPixel = 250
                     else:
-                        r = sum(distances[0:i+1])+ random.randrange(7)/random.randrange(1,2)
-                        colorPixel = 100
+                        r = sum(distances[0:i+1])+ random.randrange(2,7) ** random.randrange(2,3)#Aqui se obtiene la distancia
+                        colorPixel = 80
                     if(angle ==0):
                         y= origin[1]
                         x= int(r*cos(radians(angle)))
@@ -50,13 +50,8 @@ class Sonar():
                         y= round((r*sin(radians(angle))),0)
                         x= round((r*cos(radians(angle))),0)
                     final_pos= sound_ray.define_board_points(abs(x),abs(y), self.orientation, self.position)
-                    print("FINAL POS", final_pos)
                     fill(colorPixel)
                     rect(final_pos[0], final_pos[1], 1, 1)
-            #if sound_ray.check_collision(finalpos):
-                #calculardistancia()
-            #    fill(250)
-            #    rect(finalpos[0], finalpos[1], 1, 1)
             
         
     def change_orientation(self, orientation, scenario):
@@ -75,5 +70,11 @@ class Sonar():
                 background(0)
             if(key == 'r'):
                 scenario.draw()
+            if(key == 'f'):
+                noLoop()
+            if(key == 'p'):
+                saveFrame()
+            if(key == 'z'):
+                background(0)
                 
         return orientation

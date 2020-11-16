@@ -1,7 +1,8 @@
 import math
+import random
 
-class SoundRay():
-    def __init__(self, origin, main_angle , scenario, orientation, board_size, length=0):
+class SecondarySoundRay():
+    def __init__(self, origin, main_angle , scenario, orientation, board_size, position, length=0):
         self.origin = origin
         self.length = length
         self.main_angle = main_angle
@@ -9,6 +10,7 @@ class SoundRay():
         self.orientation = orientation
         self.scenario = scenario
         self.board_size = board_size
+        self.position = position
         
     def define_board_points(self, final_x,final_y, orientation, origin):
         if(orientation=="derecha"):
@@ -90,7 +92,6 @@ class SoundRay():
                     i +=1 #aumento las colisones
                     distances.append(r) #agrego la distancia recorrida por un rayo
                     orientation = self.flip_orientation(orientation)
-                    m_angle = self.calculate_incidence_angle(final_pos, origin, main_angle, orientation, r)
                     self.generate(main_angle, orientation, distances, final_pos, i, colisiones_max )
                     break
             else:
@@ -109,4 +110,37 @@ class SoundRay():
                 
         incidence_angle= 90-((acos(adyacente/distancia))*(180/math.pi))
         return incidence_angle
-        
+    
+    def cast_rays(self,target_angle, bounces):
+        sound = SecondarySoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500], self.position)
+        pos_final=sound.generate(target_angle, self.orientation, [],self.position,0,bounces)
+        return pos_final
+    
+    def secondaryRays(self, MonteCarlo_tries,angle_scope, angles=[]):
+        for i in range(MonteCarlo_tries/2):
+            angle = random.uniform(-angle_scope, angle_scope)
+            distances=self.cast_rays(angle, 1)
+            sound_ray = SecondarySoundRay(self.position,angle,self.scenario, self.orientation,[500,500], self.position)
+            if(distances !=None):
+                for i in range(len(distances)):
+                    if(i == 0):
+                        r = distances[0] * random.randrange(1,2)
+                        colorPixel = 60
+                    else:
+                        r = sum(distances[0:i+1])* random.randrange(1,2) #Aqui se obtiene la distancia
+                        colorPixel = 15
+                    if(angle ==0):
+                        y= origin[1]
+                        x= int(r*cos(radians(angle)))
+                        
+                    elif (angle == 90):
+                        x=0
+                        y= int(r*sin(radians(angle)))
+                    else:   
+                        y= round((r*sin(radians(angle))),0)
+                        x= round((r*cos(radians(angle))),0)
+                    final_pos= sound_ray.define_board_points(abs(x),abs(y), self.orientation, self.position)
+                    fill(colorPixel)
+                    subx = 1 + ((random.randrange(1,6))*0.01)
+                    factor = random.randrange(0,2)
+                    rect(final_pos[0]/subx, final_pos[1]/subx, 0.5*factor, 0.5*factor)
