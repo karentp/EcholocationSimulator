@@ -9,9 +9,9 @@ sonarX = sonarY = 250
 walls = 7
 scenario = Scenario(walls, w, h)
 angle_for_rays = 80
-montecarlo_tries = 15
+montecarlo_tries = 2
 orientation = "derecha"
-sonar_size = 10
+sonar_size = 15
 
 def settings():
     size(w, h)

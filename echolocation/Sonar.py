@@ -10,6 +10,7 @@ class Sonar():
         self.position = position
         self.scenario = scenario
         self.orientation = orientation
+        self.vectorunitario = random.randrange(1,7) ** random.randrange(2,4)
 
     def cast_rays(self,target_angle, bounces):
         sound = SoundRay(self.position,target_angle,self.scenario, self.orientation,[500,500])
@@ -37,8 +38,8 @@ class Sonar():
                         r = distances[0]
                         colorPixel = 250
                     else:
-                        r = sum(distances[0:i+1])+ random.randrange(2,7) ** random.randrange(2,3)#Aqui se obtiene la distancia
-                        colorPixel = 80
+                        r = sum(distances[0:i+1]) + self.vectorunitario
+                        colorPixel = 70
                     if(angle ==0):
                         y= origin[1]
                         x= int(r*cos(radians(angle)))

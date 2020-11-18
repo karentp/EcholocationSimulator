@@ -11,6 +11,9 @@ class SecondarySoundRay():
         self.scenario = scenario
         self.board_size = board_size
         self.position = position
+        self.vectorunitario = random.randrange(1,2)
+        self.secondaryweight = 1 + ((random.randrange(1,6))*0.01)
+        self.factor = random.randrange(0,2)
         
     def define_board_points(self, final_x,final_y, orientation, origin):
         if(orientation=="derecha"):
@@ -125,9 +128,9 @@ class SecondarySoundRay():
                 for i in range(len(distances)):
                     if(i == 0):
                         r = distances[0] * random.randrange(1,2)
-                        colorPixel = 60
+                        colorPixel = 70
                     else:
-                        r = sum(distances[0:i+1])* random.randrange(1,2) #Aqui se obtiene la distancia
+                        r = sum(distances[0:i+1]) + self.vectorunitario
                         colorPixel = 15
                     if(angle ==0):
                         y= origin[1]
@@ -141,6 +144,5 @@ class SecondarySoundRay():
                         x= round((r*cos(radians(angle))),0)
                     final_pos= sound_ray.define_board_points(abs(x),abs(y), self.orientation, self.position)
                     fill(colorPixel)
-                    subx = 1 + ((random.randrange(1,6))*0.01)
-                    factor = random.randrange(0,2)
-                    rect(final_pos[0]/subx, final_pos[1]/subx, 0.5*factor, 0.5*factor)
+                    
+                    rect(final_pos[0]/self.secondaryweight, final_pos[1]/self.secondaryweight, 0.5*self.factor, 0.5*self.factor)
